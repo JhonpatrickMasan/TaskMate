@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - TaskMate</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* General Page Styling */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(120deg, #6a0dad, #1e1e2f);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .form-container {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 2rem 3rem;
+            border-radius: 15px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+            width: 100%;
+            max-width: 450px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+            font-weight: 600;
+        }
+
+        /* Form Field Styling */
+        .input-field {
+            width: 100%;
+            padding: 1rem;
+            margin: 0.75rem 0;
+            border-radius: 10px;
+            border: 1px solid #9c27b0;
+            background-color: #333;
+            color: #fff;
+            font-size: 1.1rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .input-field:focus {
+            border-color: #673ab7; /* Change border on focus */
+            box-shadow: 0 0 10px rgba(103, 58, 183, 0.8);
+        }
+
+        .input-field::placeholder {
+            color: #bbb;
+        }
+
+        /* Button Styling */
+        .btn {
+            width: 100%;
+            padding: 1rem;
+            background-color: #9c27b0;
+            color: #fff;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1.5rem;
+        }
+
+        .btn:hover {
+            background-color: #673ab7;
+            box-shadow: 0 0 8px rgba(103, 58, 183, 0.7);
+            transform: translateY(-4px);
+        }
+
+        .btn:active {
+            background-color: #5e35b1;
+            transform: translateY(2px);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            .form-container {
+                padding: 1.5rem 2rem;
+                width: 90%;
+            }
+            h2 {
+                font-size: 1.8rem;
+            }
+        }
+
+        /* Footer Styling */
+        .form-footer {
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .form-footer a {
+            color: #9c27b0;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <h2>Register</h2>
+        <form method="POST">
+            {% csrf_token %}
+            
+            <!-- Username -->
+            <input type="text" name="username" class="input-field" placeholder="Username" required>
+
+            <!-- Email -->
+            <input type="email" name="email" class="input-field" placeholder="Email" required>
+
+            <!-- Password -->
+            <input type="password" name="password1" class="input-field" placeholder="Password" required>
+
+            <!-- Confirm Password -->
+            <input type="password" name="password2" class="input-field" placeholder="Confirm Password" required>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn">Sign Up</button>
+        </form>
+
+        <!-- Footer -->
+        <div class="form-footer">
+            Already have an account? <a>Login</a>
+        </div>
+    </div>
+
+</body>
+</html>
