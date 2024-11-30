@@ -1,4 +1,3 @@
-<!-- myapp/templates/home.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,7 +33,7 @@
         nav {
             margin-top: 2rem;
         }
-        nav a {
+        .button {
             display: inline-block;
             margin: 0.5rem;
             padding: 0.75rem 1.5rem;
@@ -44,8 +43,10 @@
             background: #9c27b0; /* Vibrant violet */
             border-radius: 25px;
             transition: all 0.3s ease-in-out;
+            border: none; /* Remove default button border */
+            cursor: pointer; /* Pointer cursor for buttons */
         }
-        nav a:hover {
+        .button:hover {
             background: #673ab7; /* Deep violet */
             transform: translateY(-3px);
         }
@@ -58,11 +59,13 @@
     <main>
         <p>Glad to have you back on TaskMate. Manage your tasks with ease.</p>
         <nav>
-            <a href="{% url 'kanban_board' %}">My Tasks</a> <!-- Updated to route to the Kanban board -->
-            <a href="#">Profile</a>
-            <a href="{% url 'logout' %}">Logout</a>
+            <a href="{% url 'kanban_board' %}" class="button">My Tasks</a> <!-- Updated to route to the Kanban board -->
+            <a href="#" class="button">Profile</a>
+            <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="button">Logout</button>
+            </form>            
         </nav>
-        
     </main>
 </body>
 </html>
