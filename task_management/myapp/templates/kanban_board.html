@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kanban Board</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(120deg, #6a0dad, #1e1e2f);
+            color: #fff;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            margin: 1rem 0;
+            font-size: 2.5rem;
+        }
+
+        .kanban-container {
+            display: flex;
+            justify-content: space-around;
+            padding: 2rem;
+        }
+
+        .kanban-column {
+            width: 30%;
+            background: #2c2c3c;
+            border-radius: 10px;
+            padding: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .kanban-column h3 {
+            text-align: center;
+            margin: 0.5rem 0 1.5rem;
+            font-size: 1.5rem;
+            color: #e3e3e3;
+            border-bottom: 2px solid #9c27b0;
+            padding-bottom: 0.5rem;
+        }
+
+        .task {
+            background-color: #39395d;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .task:hover {
+            transform: scale(1.03);
+            background-color: #4e4e7e;
+        }
+
+        .task h4 {
+            margin: 0 0 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .task p {
+            margin: 0.3rem 0;
+            font-size: 0.9rem;
+            color: #ddd;
+        }
+
+        .task a {
+            text-decoration: none;
+            color: #9c27b0;
+            font-weight: 600;
+        }
+
+        .task a:hover {
+            text-decoration: underline;
+        }
+
+        .empty-message {
+            text-align: center;
+            color: #aaa;
+            font-style: italic;
+        }
+
+        .create-task-btn {
+            display: block;
+            width: fit-content;
+            margin: 2rem auto;
+            padding: 0.75rem 1.5rem;
+            background: #9c27b0;
+            color: #fff;
+            text-decoration: none;
+            font-size: 1rem;
+            border-radius: 25px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .create-task-btn:hover {
+            background: #6a0dad;
+            transform: translateY(-3px);
+        }
+
+        .kanban-container {
+            display: flex;
+            justify-content: space-around;
+            padding: 2rem;
+        }
+        .kanban-column {
+            width: 30%;
+            background: #2c2c3c;
+            border-radius: 10px;
+            padding: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+        .kanban-column h3 {
+            text-align: center;
+            margin: 0.5rem 0 1.5rem;
+            font-size: 1.5rem;
+            color: #e3e3e3;
+            border-bottom: 2px solid #9c27b0;
+            padding-bottom: 0.5rem;
+        }
+        .task {
+            background-color: #39395d;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            cursor: grab;
+        }
+        .task.dragging {
+            opacity: 0.5;
+        }
+        .kanban-column.drag-over {
+            background-color: #444466;
+        }
+        .task-actions {
+            margin-top: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .task-actions a {
+            color: #9c27b0;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: bold;
+            border: 1px solid #9c27b0;
+            border-radius: 5px;
+            padding: 0.3rem 0.5rem;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        
+        .task-actions a:hover {
+            background-color: #9c27b0;
+            color: #fff;
+        }
+        
+    </style>
+</head>
+<body>
+    <h1>Kanban Board</h1>
+    <a href="{% url 'create_task' %}" class="create-task-btn">Create Task</a>
+    <div class="kanban-container">
+        <div class="kanban-column" data-status="TODO" ondragover="allowDrop(event)" ondrop="drop(event)">
+            <h3>To Do</h3>
+            {% for task in tasks.TODO %}
+                <div class="task" draggable="true" ondragstart="dragStart(event)" ondragend="dragEnd(event)" data-id="{{ task.id }}">
+                    <h4>{{ task.title }}</h4>
+                    <p>{{ task.description }}</p>
+                    <div class="task-actions">
+                        <a href="{% url 'edit_task' task.id %}" class="edit-btn">Edit</a>
+                        <a href="{% url 'delete_task' task.id %}" class="delete-btn">Delete</a>
+                    </div>
+                </div>
+            {% empty %}
+                <p class="empty-message">No tasks in this column</p>
+            {% endfor %}
+        </div>
+        <div class="kanban-column" data-status="IN_PROGRESS" ondragover="allowDrop(event)" ondrop="drop(event)">
+            <h3>In Progress</h3>
+            {% for task in tasks.IN_PROGRESS %}
+                <div class="task" draggable="true" ondragstart="dragStart(event)" ondragend="dragEnd(event)" data-id="{{ task.id }}">
+                    <h4>{{ task.title }}</h4>
+                    <p>{{ task.description }}</p>
+                </div>
+            {% empty %}
+                <p class="empty-message">No tasks in this column</p>
+            {% endfor %}
+        </div>
+        <div class="kanban-column" data-status="DONE" ondragover="allowDrop(event)" ondrop="drop(event)">
+            <h3>Done</h3>
+            {% for task in tasks.DONE %}
+                <div class="task" draggable="true" ondragstart="dragStart(event)" ondragend="dragEnd(event)" data-id="{{ task.id }}">
+                    <h4>{{ task.title }}</h4>
+                    <p>{{ task.description }}</p>
+                </div>
+            {% empty %}
+                <p class="empty-message">No tasks in this column</p>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+
+<script>
+    let draggedTask = null;
+
+    function dragStart(event) {
+        draggedTask = event.target;
+        event.target.classList.add('dragging');
+    }
+
+    function dragEnd(event) {
+        event.target.classList.remove('dragging');
+    }
+
+    function allowDrop(event) {
+        event.preventDefault();
+        event.currentTarget.classList.add('drag-over');
+    }
+
+    function drop(event) {
+        event.preventDefault();
+    
+        const column = event.currentTarget;
+        const status = column.getAttribute('data-status');
+        
+        // Append the dragged task to the new column
+        column.appendChild(draggedTask);
+    
+        // Remove the drag-over style
+        column.classList.remove('drag-over');
+    
+        // Update the task status in the backend
+        const taskId = draggedTask.getAttribute('data-id');
+        updateTaskStatus(taskId, status);
+    
+        // Recalculate empty messages
+        updateEmptyMessages();
+    }
+    
+    
+    function updateEmptyMessages() {
+        const columns = document.querySelectorAll('.kanban-column');
+        
+        columns.forEach(column => {
+            const tasks = column.querySelectorAll('.task');
+            let emptyMessage = column.querySelector('.empty-message');
+    
+            console.log('Column:', column.getAttribute('data-status'), 'Tasks count:', tasks.length, 'Empty Message:', emptyMessage);
+    
+            // If there are tasks, hide the empty message
+            if (tasks.length > 0) {
+                if (emptyMessage) {
+                    emptyMessage.style.display = 'none';
+                }
+            } else {
+                // If there are no tasks, show the empty message
+                if (emptyMessage) {
+                    emptyMessage.style.display = 'block';
+                } else {
+                    // If empty message doesn't exist, create and append it
+                    emptyMessage = document.createElement('p');
+                    emptyMessage.classList.add('empty-message');
+                    emptyMessage.style.display = 'block';
+                    emptyMessage.textContent = 'No tasks in this column';
+                    column.appendChild(emptyMessage);
+                }
+            }
+        });
+    }
+    
+    function updateTaskStatus(taskId, status) {
+        fetch(`/update-task-status/${taskId}/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'  // Ensure CSRF token is included
+            },
+            body: JSON.stringify({ status: status })
+        })
+        .then(response => {
+            if (!response.ok) {
+                console.error('Failed to update task status');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+</script>
+</html>

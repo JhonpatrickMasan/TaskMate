@@ -1,10 +1,10 @@
+<!-- myapp/templates/home.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home - TaskMate</title>
-    <!-- Link to Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         body {
@@ -58,10 +58,11 @@
     <main>
         <p>Glad to have you back on TaskMate. Manage your tasks with ease.</p>
         <nav>
-            <a href="#">My Tasks</a>
+            <a href="{% url 'kanban_board' %}">My Tasks</a> <!-- Updated to route to the Kanban board -->
             <a href="#">Profile</a>
-            <a href="/logout/">Logout</a>
+            <a href="{% url 'logout' %}">Logout</a>
         </nav>
+        
     </main>
 </body>
 </html>

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import TodoItem
+from .models import Task  # Use the correct model name here
 
-# Register your models here.
-admin.site.register(TodoItem)
+# Register your model
+admin.site.register(Task)
