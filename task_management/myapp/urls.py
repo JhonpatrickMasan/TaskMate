@@ -13,4 +13,5 @@ urlpatterns = [
     path('task/edit/<int:pk>/', views.edit_task, name='edit_task'),  # Edit task
     path('task/delete/<int:pk>/', views.delete_task, name='delete_task'),  # Delete task
     path('update-task-status/<int:task_id>/', views.update_task_status, name='update_task_status'),
+    path('profile/', views.profile, name='profile'),  # Profile page
 ]

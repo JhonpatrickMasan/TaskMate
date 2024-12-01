@@ -10,7 +10,6 @@ from .forms import TaskForm
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
-from .models import Task
 
 
 # Landing page view
@@ -123,3 +122,20 @@ def update_task_status(request, task_id):
         except Task.DoesNotExist:
             return JsonResponse({'success': False, 'message': 'Task not found'}, status=404)
     return JsonResponse({'success': False, 'message': 'Invalid request method'}, status=400)
+
+@login_required
+def profile(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+
+        # Update the user information
+        user = request.user
+        user.username = username
+        user.email = email
+        user.save()
+
+        messages.success(request, "Your profile has been updated successfully.")
+        return redirect('profile')
+
+    return render(request, 'profile.html')

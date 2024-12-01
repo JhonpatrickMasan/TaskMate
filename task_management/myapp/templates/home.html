@@ -60,7 +60,7 @@
         <p>Glad to have you back on TaskMate. Manage your tasks with ease.</p>
         <nav>
             <a href="{% url 'kanban_board' %}" class="button">My Tasks</a> <!-- Updated to route to the Kanban board -->
-            <a href="#" class="button">Profile</a>
+            <a href="{% url 'profile' %}" class="button">Profile</a>
             <form action="{% url 'logout' %}" method="post" style="display: inline;">
                 {% csrf_token %}
                 <button type="submit" class="button">Logout</button>
