@@ -121,6 +121,34 @@
             color: #aaa;
             font-style: italic;
         }
+
+        .controls {
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .controls label {
+            margin-right: 1rem;
+        }
+
+        .controls select, .controls button {
+            padding: 0.5rem;
+            background-color: #4e4e7e;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .controls button {
+            background-color: #9c27b0;
+        }
+
+        .controls select:focus, .controls button:focus {
+            outline: none;
+        }
     </style>
 </head>
 <body>
@@ -134,14 +162,64 @@
     <!-- Main Content -->
     <div class="content">
         <h1>Kanban Board</h1>
+
+        <!-- Sorting and Filtering Controls
+        <div class="controls">
+            <div>
+                <label for="sort-tasks">Sort By:</label>
+                <select id="sort-tasks" onchange="applyFiltersAndSort()">
+                    <option value="newest">Newest to Oldest</option>
+                    <option value="oldest">Oldest to Newest</option>
+                    <option value="due_date">Due Date</option>
+                </select>
+            </div>
+        
+            <div>
+                <label for="due-date-filter">Filter By Due Date:</label>
+                <input type="date" id="due-date-filter" onchange="applyFiltersAndSort()">
+            </div>
+        
+            <div>
+                <label for="filter-tags">Filter By Tag:</label>
+                <select id="filter-tags" onchange="applyFiltersAndSort()">
+                    <option value="all">All</option>
+                    Tag options will be dynamically inserted here
+                </select>
+            </div>
+        
+            <button onclick="clearFiltersAndSort()">Clear Filter and Sort</button>
+        </div>-->
+        
+
         <div class="kanban-container">
+            <!-- Not Started Column -->
+            <div class="kanban-column" data-status="NOT_STARTED" ondragover="allowDrop(event)" ondrop="drop(event)">
+                <h3>Not Started</h3>
+                {% for task in tasks.NOT_STARTED %}
+                    <div class="task" draggable="true" ondragstart="dragStart(event)" ondragend="dragEnd(event)" data-id="{{ task.id }}" data-tag="{{ task.tags }}" data-created="{{ task.created }}">
+                        <h4>{{ task.title }}</h4>
+                        <p>{{ task.description }}</p>
+                        <p><strong>Due:</strong> {{ task.due_date }}</p>
+                        <p><strong>Tags:</strong> {{ task.tags }}</p>
+                        <div class="task-actions">
+                            <a href="{% url 'edit_task' task.id %}" class="edit-btn">Edit</a>
+                            <a href="{% url 'delete_task' task.id %}" class="delete-btn">Delete</a>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p class="empty-message">No tasks in this column</p>
+                {% endfor %}
+            </div>
+
             <!-- To Do Column -->
             <div class="kanban-column" data-status="TODO" ondragover="allowDrop(event)" ondrop="drop(event)">
                 <h3>To Do</h3>
                 {% for task in tasks.TODO %}
-                    <div class="task" draggable="true" ondragstart="dragStart(event)" ondragend="dragEnd(event)" data-id="{{ task.id }}">
+                    <div class="task" draggable="true" ondragstart="dragStart(event)" ondragend="dragEnd(event)" data-id="{{ task.id }}" data-tag="{{ task.tags }}" data-created="{{ task.created }}">
                         <h4>{{ task.title }}</h4>
                         <p>{{ task.description }}</p>
+                        <p><strong>Due:</strong> {{ task.due_date }}</p>
+                        <p><strong>Tags:</strong> {{ task.tags }}</p>
                         <div class="task-actions">
                             <a href="{% url 'edit_task' task.id %}" class="edit-btn">Edit</a>
                             <a href="{% url 'delete_task' task.id %}" class="delete-btn">Delete</a>
@@ -156,9 +234,11 @@
             <div class="kanban-column" data-status="IN_PROGRESS" ondragover="allowDrop(event)" ondrop="drop(event)">
                 <h3>In Progress</h3>
                 {% for task in tasks.IN_PROGRESS %}
-                    <div class="task" draggable="true" ondragstart="dragStart(event)" ondragend="dragEnd(event)" data-id="{{ task.id }}">
+                <div class="task" draggable="true" ondragstart="dragStart(event)" ondragend="dragEnd(event)" data-id="{{ task.id }}" data-tag="{{ task.tags }}" data-created="{{ task.created_at }}">
                         <h4>{{ task.title }}</h4>
                         <p>{{ task.description }}</p>
+                        <p><strong>Due:</strong> {{ task.due_date }}</p>
+                        <p><strong>Tags:</strong> {{ task.tags }}</p>
                         <div class="task-actions">
                             <a href="{% url 'edit_task' task.id %}" class="edit-btn">Edit</a>
                             <a href="{% url 'delete_task' task.id %}" class="delete-btn">Delete</a>
@@ -173,9 +253,11 @@
             <div class="kanban-column" data-status="DONE" ondragover="allowDrop(event)" ondrop="drop(event)">
                 <h3>Done</h3>
                 {% for task in tasks.DONE %}
-                    <div class="task" draggable="true" ondragstart="dragStart(event)" ondragend="dragEnd(event)" data-id="{{ task.id }}">
+                    <div class="task" draggable="true" ondragstart="dragStart(event)" ondragend="dragEnd(event)" data-id="{{ task.id }}" data-tag="{{ task.tags }}" data-created="{{ task.created }}">
                         <h4>{{ task.title }}</h4>
                         <p>{{ task.description }}</p>
+                        <p><strong>Due:</strong> {{ task.due_date }}</p>
+                        <p><strong>Tags:</strong> {{ task.tags }}</p>
                         <div class="task-actions">
                             <a href="{% url 'edit_task' task.id %}" class="edit-btn">Edit</a>
                             <a href="{% url 'delete_task' task.id %}" class="delete-btn">Delete</a>
@@ -206,7 +288,6 @@
 
         function drop(event) {
             event.preventDefault();
-
             const column = event.currentTarget;
             const status = column.getAttribute('data-status');
 
@@ -216,8 +297,6 @@
             // Update the task status in the backend
             const taskId = draggedTask.getAttribute('data-id');
             updateTaskStatus(taskId, status);
-
-            // Recalculate empty messages
             updateEmptyMessages();
         }
 
@@ -258,6 +337,113 @@
                 }
             });
         }
+
+        function applyFiltersAndSort() {
+            const sortBy = document.getElementById('sort-tasks').value;
+            const filterTag = document.getElementById('filter-tags').value;
+            const selectedDueDate = document.getElementById('due-date-filter').value;
+        
+            const columns = document.querySelectorAll('.kanban-column');
+            columns.forEach(column => {
+                const tasks = Array.from(column.querySelectorAll('.task'));
+        
+                // Filter tasks by tag and due date
+                let filteredTasks = tasks.filter(task => {
+                    const taskTags = task.getAttribute('data-tag').split(','); // Assuming tags are comma-separated
+                    const isTagMatch = filterTag === 'all' || taskTags.includes(filterTag);
+        
+                    // Filter by due date if specified
+                    const taskDueDate = task.getAttribute('data-due');
+                    const isDueDateMatch = selectedDueDate === "" || taskDueDate === selectedDueDate;
+        
+                    return isTagMatch && isDueDateMatch;
+                });
+        
+                // Sort tasks
+                filteredTasks.sort((a, b) => {
+                    if (sortBy === 'newest') {
+                        const createdA = new Date(a.getAttribute('data-created'));
+                        const createdB = new Date(b.getAttribute('data-created'));
+                        return createdB - createdA;
+                    } else if (sortBy === 'oldest') {
+                        const createdA = new Date(a.getAttribute('data-created'));
+                        const createdB = new Date(b.getAttribute('data-created'));
+                        return createdA - createdB;
+                    } else if (sortBy === 'due_date') {
+                        const dueA = new Date(a.getAttribute('data-due'));
+                        const dueB = new Date(b.getAttribute('data-due'));
+                        return dueA - dueB;
+                    }
+                });
+        
+                // Clear all tasks and append filtered/sorted tasks
+                column.innerHTML = column.querySelector('h3').outerHTML;  // Retain column header
+                filteredTasks.forEach(task => column.appendChild(task));
+            });
+        }
+        
+        
+        
+
+        function clearFiltersAndSort() {
+            document.getElementById('sort-tasks').value = 'newest';
+            document.getElementById('filter-tags').value = 'all';
+            applyFiltersAndSort();
+        }
+
+        // Generate dynamic task tags filter
+        function generateTagFilter(tags) {
+            const filterSelect = document.getElementById('filter-tags');
+            tags.forEach(tag => {
+                const option = document.createElement('option');
+                option.value = tag;
+                option.textContent = tag;
+                filterSelect.appendChild(option);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Sample tags and tasks data
+            const tags = ['Urgent', 'In Progress', 'Completed'];
+            generateTagFilter(tags);
+
+            // Initialize Kanban Columns
+            const tasks = [
+                { id: 1, title: 'Task 1', status: 'todo', tags: ['Urgent'], dueDate: '2024-12-05', created: '2024-11-01' },
+                { id: 2, title: 'Task 2', status: 'in_progress', tags: ['In Progress'], dueDate: '2024-12-08', created: '2024-11-02' },
+                { id: 3, title: 'Task 3', status: 'completed', tags: ['Completed'], dueDate: '2024-12-10', created: '2024-11-03' }
+            ];
+            
+            const columnContainers = document.querySelectorAll('.kanban-column');
+            
+            tasks.forEach(task => {
+                const taskElement = document.createElement('div');
+                taskElement.classList.add('task');
+                taskElement.setAttribute('draggable', 'true');
+                taskElement.setAttribute('data-id', task.id);
+                taskElement.setAttribute('data-tag', task.tags.join(','));
+                taskElement.setAttribute('data-due', task.dueDate);
+                taskElement.setAttribute('data-created', task.created);
+
+                taskElement.innerHTML = `
+                    <strong>${task.title}</strong>
+                    <div class="task-actions">
+                        <a href="#">Edit</a>
+                        <a href="#">Delete</a>
+                    </div>
+                `;
+        
+                // Add event listeners for drag events
+                taskElement.addEventListener('dragstart', dragStart);
+                taskElement.addEventListener('dragend', dragEnd);
+        
+                // Find the correct column to add the task
+                const column = Array.from(columnContainers).find(col => col.getAttribute('data-status') === task.status);
+                column.appendChild(taskElement);
+            });
+
+            updateEmptyMessages();
+        });
     </script>
 </body>
 </html>

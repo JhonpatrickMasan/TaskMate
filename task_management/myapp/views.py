@@ -75,6 +75,8 @@ def home(request):
 # List tasks for each Kanban column
 def kanban_board(request):
     tasks = {
+        'NOT_STARTED': Task.objects.filter(status='NOT_STARTED'),
+        'PENDING': Task.objects.filter(status='PENDING'),
         'TODO': Task.objects.filter(status='TODO'),
         'IN_PROGRESS': Task.objects.filter(status='IN_PROGRESS'),
         'DONE': Task.objects.filter(status='DONE'),
@@ -139,3 +141,16 @@ def profile(request):
         return redirect('profile')
 
     return render(request, 'profile.html')
+
+def create_task(request):
+    if request.method == 'POST':
+        form = TaskForm(request.POST)
+        if form.is_valid():
+            task = form.save(commit=False)
+            # 'created_at' is automatically handled by the model, so no need to manually assign it.
+            task.save()
+            return redirect('kanban_board')  # Redirect after saving the task
+    else:
+        form = TaskForm()
+
+    return render(request, 'task_form.html', {'form': form})

@@ -12,6 +12,16 @@ class RegistrationForm(UserCreationForm):
         fields = ['username', 'email', 'password1', 'password2']
 
 class TaskForm(forms.ModelForm):
+    due_date = forms.DateField(
+        widget=forms.DateInput(attrs={'type': 'date'}),  # HTML5 date picker
+        required=False
+    )
+    tags = forms.CharField(
+        widget=forms.TextInput(attrs={'placeholder': 'e.g., Math, Science'}),
+        required=False
+    )
+
     class Meta:
         model = Task
-        fields = ['title', 'description', 'status']
+        fields = ['title', 'description', 'status', 'due_date', 'tags']  # Include new fields
+
