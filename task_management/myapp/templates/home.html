@@ -3,69 +3,167 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - TaskMate</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <title>TaskMate</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Inter', sans-serif;
             margin: 0;
             padding: 0;
-            background: linear-gradient(120deg, #6a0dad, #1e1e2f);
-            color: #fff;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            text-align: center;
+            background-color: #ffffff; 
+            color: #1a1a1a; 
+            line-height: 1.6;
         }
         header {
+            display: flex;
+            position: sticky;
+            top: 0;
+            background-color: #ffffff; 
+            z-index: 1000;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid #e5e5e5;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: #1a1a1a;
+            font-weight: 500;
+            font-size: 0.9rem;
+            position: relative; 
+        }
+        .nav-links a:hover {
+            color: #0582ff;
+            text-decoration: underline;
+        }
+        .nav-links form button {
+            background: none;
+            border: none;
+            color: #1a1a1a;
+            font-weight: 500;
+            margin-left: -12px;
+            font-size: 0.9rem;
+            text-decoration: none;
+            position: relative;
+            cursor: pointer;
+        }
+        .nav-links form button:hover {
+            color: #0582ff;
+            text-decoration: underline;
+        }
+        .hero {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+        .hero img {
+            max-width: 40%;
+            height: auto;
             margin-bottom: 2rem;
+            background-size: cover; 
+            background-position: center;
         }
-        h1 {
+        .hero h1 {
             font-size: 2.5rem;
-            margin: 0;
+            font-weight: 700;
+            color: 1a1a1a;
+            margin-bottom: 1rem;
+            margin-top: -1.5rem;
         }
-        p {
-            font-size: 1.2rem;
-            margin: 1rem 0;
+        .hero p {
+            font-size: 1rem;
+            color: #555;
+            margin-bottom: 2rem;
+            margin-top: -0.5rem;
         }
-        nav {
-            margin-top: 2rem;
-        }
-        .button {
+        .hero .button {
             display: inline-block;
-            margin: 0.5rem;
             padding: 0.75rem 1.5rem;
             font-size: 1rem;
+            font-weight: 600;
             color: #fff;
+            background-color: #0582ff;
+            border: none;
+            border-radius: 6px;
             text-decoration: none;
-            background: #9c27b0; /* Vibrant violet */
-            border-radius: 25px;
-            transition: all 0.3s ease-in-out;
-            border: none; /* Remove default button border */
-            cursor: pointer; /* Pointer cursor for buttons */
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
-        .button:hover {
-            background: #673ab7; /* Deep violet */
-            transform: translateY(-3px);
+        .hero .button:hover {
+            background-color: #045ac3;
+            transform: translateY(-4px);
+        }
+        .features {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-top: -3rem;
+            padding: 2rem;
+        }
+        .card {
+            background: #f9f9f9;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 1.5rem;
+            width: 250px;
+            text-align: left;
+        }
+        .card h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        .card p {
+            font-size: 0.9rem;
+            color: #555;
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>Welcome, {{ user.username }}!</h1>
-    </header>
-    <main>
-        <p>Glad to have you back on TaskMate. Manage your tasks with ease.</p>
-        <nav>
-            <a href="{% url 'kanban_board' %}" class="button">My Tasks</a> <!-- Updated to route to the Kanban board -->
-            <a href="{% url 'profile' %}" class="button">Profile</a>
-            <form action="{% url 'logout' %}" method="post" style="display: inline;">
+        <div class="logo">Taskmate</div>
+        <nav class="nav-links">
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'kanban_board' %}">Kanban Board</a>
+            <a href="{% url 'profile' %}">Profile</a>
+            <form action="{% url 'logout' %}" method="post">
                 {% csrf_token %}
-                <button type="submit" class="button">Logout</button>
-            </form>            
+                <button type="submit">Logout</button>
+            </form>
         </nav>
-    </main>
+    </header>
+    <section class="hero">
+        <img src="https://www.notion.com/cdn-cgi/image/format=webp,width=1920/https://images.ctfassets.net/spoqsaf9291f/7K4ABTnW9zHRzHXpdJhKq6/5f0828bc15d26a2fe1437affc2e9de34/front_main_hero_together.png" alt="Illustration Placeholder">
+        <h1>Where your productivity meets peace of mind.</h1>
+        <p>Manage tasks, track progress, and stay organized—all in one place.</p>
+        <a href="{% url 'kanban_board' %}" class="button">Get Started</a>
+    </section>
+    <section class="features">
+        <div class="card">
+            <h3>Student Planner</h3>
+            <p>Stay organized with a home base for your to-dos and activities.</p>
+        </div>
+        <div class="card">
+            <h3>Drag and Drop</h3>
+            <p>Quickly organize and prioritize your tasks with drag and drop.</p>
+        </div>
+        <div class="card">
+            <h3>Tags and Labels</h3>
+            <p>Categorize your tasks with custom tags and labels for better clarity.</p>
+        </div>
+        <div class="card">
+            <h3>Deadlines</h3>
+            <p>Set, track, and conquer deadlines with ease.</p>
+        </div>
+    </section>
 </body>
 </html>
