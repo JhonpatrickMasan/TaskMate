@@ -4,53 +4,80 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register - TaskMate</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Link to Google Fonts for Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Link to Font Awesome for icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
         /* General Page Styling */
         body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(120deg, #6a0dad, #1e1e2f);
-            color: #fff;
+            font-family: 'Inter', sans-serif;
+            background: #fff;
+            color: #333;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
+            flex-direction: row;
         }
 
-        .form-container {
-            background: rgba(0, 0, 0, 0.8);
-            padding: 2rem 3rem;
-            border-radius: 15px;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+        /* Container to hold the form and the hero image */
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             width: 100%;
-            max-width: 450px;
+            max-width: 1200px;
+            height: 80vh;
+        }
+
+        /* Form Section */
+        .form-container {
+            background: #ffffff;
+            padding: 2rem 3rem;
+            border-radius: 12px;
+            width: 45%; /* Set width to 45% for better alignment */
+            text-align: center;
         }
 
         h2 {
-            text-align: center;
-            margin-bottom: 1.5rem;
             font-size: 2rem;
+            font-weight: 605;
+            color: #1a1a1a;
+            margin-bottom: 1.5rem;
+        }
+
+        .back-btn {
+            display: inline-block;
+            font-size: 1rem;
+            color: #087fe7;
+            text-decoration: none;
+            margin-bottom: 1.5rem;
             font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            text-decoration: underline;
         }
 
         /* Form Field Styling */
         .input-field {
-            width: 100%;
+            width: 380px;
             padding: 1rem;
             margin: 0.75rem 0;
-            border-radius: 10px;
-            border: 1px solid #9c27b0;
-            background-color: #333;
-            color: #fff;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            background-color: transparent;
+            color: #333;
             font-size: 1.1rem;
             outline: none;
             transition: all 0.3s ease;
         }
 
         .input-field:focus {
-            border-color: #673ab7; /* Change border on focus */
-            box-shadow: 0 0 10px rgba(103, 58, 183, 0.8);
+            border-color: #0582ff;
         }
 
         .input-field::placeholder {
@@ -59,12 +86,12 @@
 
         /* Button Styling */
         .btn {
-            width: 100%;
+            width: 410px;
             padding: 1rem;
-            background-color: #9c27b0;
+            background-color: #0582ff;
             color: #fff;
             border: none;
-            border-radius: 25px;
+            border-radius: 6px;
             font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
@@ -73,25 +100,25 @@
         }
 
         .btn:hover {
-            background-color: #673ab7;
-            box-shadow: 0 0 8px rgba(103, 58, 183, 0.7);
+            background-color: #045ac3;
             transform: translateY(-4px);
         }
 
         .btn:active {
-            background-color: #5e35b1;
+            background-color: #8e24aa;
             transform: translateY(2px);
         }
 
-        /* Responsive Design */
-        @media (max-width: 480px) {
-            .form-container {
-                padding: 1.5rem 2rem;
-                width: 90%;
-            }
-            h2 {
-                font-size: 1.8rem;
-            }
+        /* Error Message Styling */
+        .error-message {
+            background: #ff1744;
+            color: #fff;
+            padding: 0.75rem;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            box-shadow: 0 4px 8px rgba(255, 23, 68, 0.3);
         }
 
         /* Footer Styling */
@@ -102,7 +129,7 @@
         }
 
         .form-footer a {
-            color: #9c27b0;
+            color: #0582ff;
             text-decoration: none;
             font-weight: 600;
         }
@@ -110,34 +137,88 @@
         .form-footer a:hover {
             text-decoration: underline;
         }
+
+        /* Hero Image Styling */
+        .hero-image {
+            width: 50%; 
+            height: 100%; 
+            background-size: contain; 
+            background-position: center;
+            background-repeat: no-repeat;
+            border-radius: 12px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                height: auto;
+            }
+
+            .form-container {
+                width: 80%;
+                margin: 0 auto;
+                margin-bottom: 2rem;
+            }
+
+            .hero-image {
+                width: 100%;
+                height: 300px;
+                border-radius: 12px;
+            }
+        }
     </style>
 </head>
 <body>
 
-    <div class="form-container">
-        <h2>Register</h2>
-        <form method="POST">
-            {% csrf_token %}
-            
-            <!-- Username -->
-            <input type="text" name="username" class="input-field" placeholder="Username" required>
+    <div class="container">
+        <!-- Hero Image Section -->
+        <div class="hero-image" style="background-image: url('https://www.notion.com/cdn-cgi/image/format=webp,width=3840/https://images.ctfassets.net/spoqsaf9291f/5RcoNncfzeuqS7V5qqelRJ/81e4b42053f8937bbbdb4842f0fcdc72/docs-hero.png');">
+            <!-- This could be your hero image -->
+        </div>
 
-            <!-- Email -->
-            <input type="email" name="email" class="input-field" placeholder="Email" required>
+        <!-- Form Section -->
+        <div class="form-container">
+            <!-- Back Button -->
+            <a href="{% url 'landing_page' %}" class="back-btn">&#8592; Back</a>
 
-            <!-- Password -->
-            <input type="password" name="password1" class="input-field" placeholder="Password" required>
+            <h2>Be One of Taskmate</h2>
 
-            <!-- Confirm Password -->
-            <input type="password" name="password2" class="input-field" placeholder="Confirm Password" required>
+            <!-- Display error messages if registration fails -->
+            {% if form.non_field_errors %}
+            <div class="error-message">
+                {% for error in form.non_field_errors %}
+                    {{ error }}
+                {% endfor %}
+            </div>
+            {% endif %}
 
-            <!-- Submit Button -->
-            <button type="submit" class="btn">Sign Up</button>
-        </form>
+            <!-- Registration Form -->
+            <form method="POST">
+                {% csrf_token %}
+                <!-- Pass the `next` parameter if it exists -->
+                <input type="hidden" name="next" value="{{ request.GET.next }}">
+                
+                <!-- Username -->
+                <input type="text" name="username" class="input-field" placeholder="Enter your username..." required>
 
-        <!-- Footer -->
-        <div class="form-footer">
-            Already have an account? <a href="{% url 'login' %}">Login</a>
+                <!-- Email -->
+                <input type="email" name="email" class="input-field" placeholder="Enter your email address..." required>
+
+                <!-- Password -->
+                <input type="password" name="password1" class="input-field" placeholder="Enter your password..." required>
+
+                <!-- Confirm Password -->
+                <input type="password" name="password2" class="input-field" placeholder="Confirm your password..." required>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn">Create Account</button>
+            </form>
+
+            <!-- Footer Links -->
+            <div class="form-footer">
+                Already have an account? <a href="{% url 'login' %}">Login</a><br>
+            </div>
         </div>
     </div>
 
