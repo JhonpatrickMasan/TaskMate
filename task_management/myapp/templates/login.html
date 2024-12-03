@@ -4,53 +4,80 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - TaskMate</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Link to Google Fonts for Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Link to Font Awesome for icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
         /* General Page Styling */
         body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(120deg, #6a0dad, #1e1e2f);
-            color: #fff;
+            font-family: 'Inter', sans-serif;
+            background: #fff;
+            color: #333;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
+            flex-direction: row;
         }
 
-        .form-container {
-            background: rgba(0, 0, 0, 0.8);
-            padding: 2rem 3rem;
-            border-radius: 15px;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+        /* Container to hold the form and the hero image */
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center; /* Ensures vertical centering */
             width: 100%;
-            max-width: 450px;
+            max-width: 1200px;
+            height: 80vh;
+        }
+
+        /* Form Section */
+        .form-container {
+            background: #ffffff;
+            padding: 2rem 3rem;
+            border-radius: 12px;
+            width: 45%; /* Set width to 45% for better alignment */
+            text-align: center;
         }
 
         h2 {
-            text-align: center;
-            margin-bottom: 1.5rem;
             font-size: 2rem;
+            font-weight: 605;
+            color: #1a1a1a;
+            margin-bottom: 1.5rem;
+        }
+
+        .back-btn {
+            display: inline-block;
+            font-size: 1rem;
+            color: #087fe7;
+            text-decoration: none;
+            margin-bottom: 1.5rem;
             font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            text-decoration: underline;
         }
 
         /* Form Field Styling */
         .input-field {
-            width: 100%;
+            width: 380px;
             padding: 1rem;
             margin: 0.75rem 0;
-            border-radius: 10px;
-            border: 1px solid #9c27b0;
-            background-color: #333;
-            color: #fff;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            background-color: transparent;
+            color: #333;
             font-size: 1.1rem;
             outline: none;
             transition: all 0.3s ease;
         }
 
         .input-field:focus {
-            border-color: #673ab7; /* Change border on focus */
-            box-shadow: 0 0 10px rgba(103, 58, 183, 0.8);
+            border-color: #0582ff;
         }
 
         .input-field::placeholder {
@@ -59,12 +86,12 @@
 
         /* Button Styling */
         .btn {
-            width: 100%;
+            width: 410px;
             padding: 1rem;
-            background-color: #9c27b0;
+            background-color: #0582ff;
             color: #fff;
             border: none;
-            border-radius: 25px;
+            border-radius: 6px;
             font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
@@ -73,13 +100,12 @@
         }
 
         .btn:hover {
-            background-color: #673ab7;
-            box-shadow: 0 0 8px rgba(103, 58, 183, 0.7);
+            background-color: #045ac3;
             transform: translateY(-4px);
         }
 
         .btn:active {
-            background-color: #5e35b1;
+            background-color: #8e24aa;
             transform: translateY(2px);
         }
 
@@ -103,7 +129,7 @@
         }
 
         .form-footer a {
-            color: #9c27b0;
+            color: #0582ff;
             text-decoration: none;
             font-weight: 600;
         }
@@ -112,67 +138,115 @@
             text-decoration: underline;
         }
 
+        /* Show Password Icon */
+        .show-password-icon {
+            position: absolute;
+            top: 50%;
+            right: 1px;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 1.5rem;
+        }
+
+        /* Hero Image Styling */
+        .hero-image {
+            width: 50%; 
+            height: 100%; 
+            background-size: contain; 
+            background-position: center;
+            background-repeat: no-repeat;
+            border-radius: 12px;
+        }
+
         /* Responsive Design */
-        @media (max-width: 480px) {
-            .form-container {
-                padding: 1.5rem 2rem;
-                width: 90%;
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                height: auto;
             }
-            h2 {
-                font-size: 1.8rem;
+
+            .form-container {
+                width: 80%;
+                margin: 0 auto;
+                margin-bottom: 2rem;
+            }
+
+            .hero-image {
+                width: 100%;
+                height: 300px;
+                border-radius: 12px;
             }
         }
+
     </style>
 </head>
 <body>
 
-    <div class="form-container">
-        <h2>Login</h2>
-
-        <!-- Display error messages if login fails -->
-        {% if form.non_field_errors %}
-        <div class="error-message">
-            {% for error in form.non_field_errors %}
-                {{ error }}
-            {% endfor %}
+    <div class="container">
+        <!-- Hero Image Section -->
+        <div class="hero-image" style="background-image: url('https://www.notion.com/cdn-cgi/image/format=webp,width=1920/front-static/pages/projects/hero.png');">
+            <!-- This could be your hero image -->
         </div>
-        {% endif %}
 
-        <!-- Login Form -->
-        <form method="POST">
-            {% csrf_token %}
-            <!-- Pass the `next` parameter if it exists -->
-            <input type="hidden" name="next" value="{{ request.GET.next }}">
-            
-            <!-- Username -->
-            <input type="text" name="username" class="input-field" placeholder="Username" required>
-        
-            <!-- Password -->
-            <input type="password" id="password" name="password" class="input-field" placeholder="Password" required>
-            
-            <!-- Show Password checkbox -->
-            <label for="show-password" style="color: #bbb; font-size: 0.9rem; display: flex; align-items: center; margin-top: 0.5rem;">
-                <input type="checkbox" id="show-password" style="margin-right: 10px;"> Show Password
-            </label>
-        
-            <!-- Submit Button -->
-            <button type="submit" class="btn">Log In</button>
-        </form>
+        <!-- Form Section -->
+        <div class="form-container">
+            <!-- Back Button -->
+            <a href="{% url 'landing_page' %}" class="back-btn">&#8592; Back</a>
 
-        <!-- Footer Links -->
-        <div class="form-footer">
-            Don't have an account? <a href="{% url 'register' %}">Sign Up</a><br>
+            <h2>Log in to your Taskmate</h2>
+
+            <!-- Display error messages if login sfails -->
+            {% if form.non_field_errors %}
+            <div class="error-message">
+                {% for error in form.non_field_errors %}
+                    {{ error }}
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <!-- Login Form -->
+            <form method="POST">
+                {% csrf_token %}
+                <!-- Pass the `next` parameter if it exists -->
+                <input type="hidden" name="next" value="{{ request.GET.next }}">
+                
+                <!-- Username -->
+                <input type="text" name="username" class="input-field" placeholder="Enter your email address..." required>
+            
+                <!-- Password -->
+                <div style="position: relative;">
+                    <input type="password" id="password" name="password" class="input-field" placeholder="Enter your password..." required>
+                    <!-- Font Awesome eye icon -->
+                    <span class="show-password-icon" id="toggle-password">
+                        <i class="fas fa-eye-slash"></i> <!-- Initial icon for hidden password -->
+                    </span>
+                </div>
+            
+                <!-- Submit Button -->
+                <button type="submit" class="btn">Log In</button>
+            </form>
+
+            <!-- Footer Links -->
+            <div class="form-footer">
+                Don't have an account? <a href="{% url 'register' %}">Sign Up</a><br>
+            </div>
         </div>
     </div>
 
     <script>
-        // Toggle password visibility
-        document.getElementById('show-password').addEventListener('change', function() {
+        // Toggle password visibility with the Font Awesome eye icon
+        document.getElementById('toggle-password').addEventListener('click', function() {
             var passwordField = document.getElementById('password');
-            if (this.checked) {
+            var icon = this.querySelector('i');
+            
+            if (passwordField.type === 'password') {
                 passwordField.type = 'text';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
             } else {
                 passwordField.type = 'password';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
             }
         });
     </script>

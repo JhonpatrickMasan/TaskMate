@@ -4,213 +4,192 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kanban Board</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(120deg, #6a0dad, #1e1e2f);
-            color: #fff;
+            font-family: 'Inter', sans-serif;
             margin: 0;
             padding: 0;
+            background-color: #ffffff; 
+            color: #1a1a1a; 
+            line-height: 1.6;
+        }
+        header {
             display: flex;
-        }
-
-        /* Sidebar Styles */
-        .sidebar {
-            width: 250px;
-            height: 100vh;
-            background: #1e1e2f;
-            position: fixed;
+            position: sticky;
             top: 0;
-            left: 0;
-            padding: 2rem 1rem;
-            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+            background-color: #ffffff; 
+            z-index: 1000;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid #e5e5e5;
         }
-
-        .sidebar a {
-            display: block;
-            color: #fff;
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+        .nav-links a {
             text-decoration: none;
-            margin: 1rem 0;
-            font-size: 1.1rem;
-            font-weight: 600;
-            padding: 0.5rem 1rem;
-            border-radius: 25px;
-            transition: background-color 0.3s ease, color 0.3s ease;
+            color: #333;
+            font-weight: 500;
+            font-size: 0.9rem;
+            position: relative; 
         }
-
-        .sidebar a:hover {
-            background-color: #9c27b0;
-            color: #fff;
+        .nav-links a:hover {
+            color: #0582ff;
+            text-decoration: underline;
         }
-
+        .nav-links form button {
+            background: none;
+            border: none;
+            color: #333;
+            font-weight: 500;
+            margin-left: -12px;
+            font-size: 0.9rem;
+            text-decoration: none;
+            position: relative;
+            cursor: pointer;
+        }
+        .nav-links form button:hover {
+            color: #0582ff;
+            text-decoration: underline;
+        }
         /* Content Area Styles */
         .content {
-            margin-left: 250px;
             padding: 2rem;
-            width: calc(100% - 250px);
+            width: auto;
         }
-
         h1 {
             text-align: center;
             margin: 1rem 0;
             font-size: 2.5rem;
         }
-
-        /* Kanban Board Layout */
         .kanban-container {
-            display: flex;
-            justify-content: space-around;
-            padding: 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 32px;
         }
-
         .kanban-column {
-            width: 30%;
-            background: #2c2c3c;
-            border-radius: 10px;
-            padding: 1rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            background: #f9f9f9;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
         }
-
-        .kanban-column h3 {
-            text-align: center;
-            margin: 0.5rem 0 1.5rem;
-            font-size: 1.5rem;
-            color: #e3e3e3;
-            border-bottom: 2px solid #9c27b0;
-            padding-bottom: 0.5rem;
-        }
-
         .task {
-            background-color: #39395d;
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
             padding: 1rem;
             margin-bottom: 1rem;
-            border-radius: 8px;
-            cursor: grab;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            cursor: pointer;
         }
-
         .task:hover {
-            transform: scale(1.03);
-            background-color: #4e4e7e;
+            transform: scale(1.02);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
         }
-
+        .task h4 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 0 0 0.5rem;
+            color: #1a1a1a;
+        }
+        .task p {
+            font-size: 0.9rem;
+            color: #666;
+            margin: 0.3rem 0;
+        }
         .task-actions {
             margin-top: 0.5rem;
             display: flex;
-            justify-content: space-between;
+            gap: 0.5rem;
         }
-
         .task-actions a {
-            color: #9c27b0;
+            font-size: 0.85rem;
+            color: #0582ff;
             text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: bold;
-            border: 1px solid #9c27b0;
-            border-radius: 5px;
+            border: 1px solid #0582ff;
+            border-radius: 4px;
             padding: 0.3rem 0.5rem;
             transition: background-color 0.3s ease, color 0.3s ease;
         }
-
         .task-actions a:hover {
-            background-color: #9c27b0;
-            color: #fff;
+            background-color: #0582ff;
+            color: #ffffff;
         }
-
-        .empty-message {
-            text-align: center;
-            color: #aaa;
-            font-style: italic;
+        .task-actions a.delete-btn {
+            color: #721c24; 
+            border-color: #721c24; 
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
-
-        .controls {
-            margin-bottom: 2rem;
+        .task-actions a.delete-btn:hover {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .task-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 1rem;
         }
-
-        .controls label {
-            margin-right: 1rem;
+        .task-header h1 {
+            margin: 0;
+            font-size: 2rem;
         }
-
-        .controls select, .controls button {
-            padding: 0.5rem;
-            background-color: #4e4e7e;
-            border: none;
-            color: white;
-            border-radius: 5px;
-            cursor: pointer;
+        .task-header a {
+            text-decoration: none;
+            background-color: #0582ff;
+            color: #ffffff;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
         }
-
-        .controls button {
-            background-color: #9c27b0;
+        .task-header a:hover {
+            background-color: #005bb5;
         }
-
-        .controls select:focus, .controls button:focus {
-            outline: none;
+        .kanban-column[data-status="TODO"] {
+            background-color: #F3EFF7;
+        }
+        
+        .kanban-column[data-status="IN_PROGRESS"] {
+            background-color: #F0F6FD;
+        }
+        
+        .kanban-column[data-status="DONE"] {
+            background-color: #EDF6ED;
         }
     </style>
 </head>
 <body>
-    <!-- Sidebar Navigation -->
-    <div class="sidebar">
-        <a href="{% url 'home' %}">Home</a>
-        <a href="{% url 'profile' %}">My Profile</a>
-        <a href="{% url 'create_task' %}">Create New Task</a>
-    </div>
-
+    <header>
+        <div class="logo">Taskmate</div>
+        <nav class="nav-links">
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'kanban_board' %}">Kanban Board</a>
+            <a href="{% url 'profile' %}">Profile</a>
+            <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit">Logout</button>
+            </form>
+        </nav>
+    </header>
     <!-- Main Content -->
     <div class="content">
-        <h1>TaskMate Tasks</h1>
-
-        <!-- Sorting and Filtering Controls
-        <div class="controls">
-            <div>
-                <label for="sort-tasks">Sort By:</label>
-                <select id="sort-tasks" onchange="applyFiltersAndSort()">
-                    <option value="newest">Newest to Oldest</option>
-                    <option value="oldest">Oldest to Newest</option>
-                    <option value="due_date">Due Date</option>
-                </select>
-            </div>
-        
-            <div>
-                <label for="due-date-filter">Filter By Due Date:</label>
-                <input type="date" id="due-date-filter" onchange="applyFiltersAndSort()">
-            </div>
-        
-            <div>
-                <label for="filter-tags">Filter By Tag:</label>
-                <select id="filter-tags" onchange="applyFiltersAndSort()">
-                    <option value="all">All</option>
-                    Tag options will be dynamically inserted here
-                </select>
-            </div>
-        
-            <button onclick="clearFiltersAndSort()">Clear Filter and Sort</button>
-        </div>-->
-        
-
+        <div class="task-header">
+            <h1>Tasks</h1>
+            <a href="{% url 'create_task' %}">Create New Task</a>
+        </div>
         <div class="kanban-container">
-            <!-- Not Started Column -->
-            <div class="kanban-column" data-status="NOT_STARTED" ondragover="allowDrop(event)" ondrop="drop(event)">
-                <h3>Not Started</h3>
-                {% for task in tasks.NOT_STARTED %}
-                    <div class="task" draggable="true" ondragstart="dragStart(event)" ondragend="dragEnd(event)" data-id="{{ task.id }}" data-tag="{{ task.tags }}" data-created="{{ task.created }}">
-                        <h4>{{ task.title }}</h4>
-                        <p>{{ task.description }}</p>
-                        <p><strong>Due:</strong> {{ task.due_date }}</p>
-                        <p><strong>Tags:</strong> {{ task.tags }}</p>
-                        <div class="task-actions">
-                            <a href="{% url 'edit_task' task.id %}" class="edit-btn">Edit</a>
-                            <a href="{% url 'delete_task' task.id %}" class="delete-btn">Delete</a>
-                        </div>
-                    </div>
-                {% empty %}
-                    <p class="empty-message">No tasks in this column</p>
-                {% endfor %}
-            </div>
-
             <!-- To Do Column -->
             <div class="kanban-column" data-status="TODO" ondragover="allowDrop(event)" ondrop="drop(event)">
                 <h3>To Do</h3>
@@ -225,8 +204,6 @@
                             <a href="{% url 'delete_task' task.id %}" class="delete-btn">Delete</a>
                         </div>
                     </div>
-                {% empty %}
-                    <p class="empty-message">No tasks in this column</p>
                 {% endfor %}
             </div>
 
@@ -234,7 +211,7 @@
             <div class="kanban-column" data-status="IN_PROGRESS" ondragover="allowDrop(event)" ondrop="drop(event)">
                 <h3>In Progress</h3>
                 {% for task in tasks.IN_PROGRESS %}
-                <div class="task" draggable="true" ondragstart="dragStart(event)" ondragend="dragEnd(event)" data-id="{{ task.id }}" data-tag="{{ task.tags }}" data-created="{{ task.created_at }}">
+                    <div class="task" draggable="true" ondragstart="dragStart(event)" ondragend="dragEnd(event)" data-id="{{ task.id }}" data-tag="{{ task.tags }}" data-created="{{ task.created_at }}">
                         <h4>{{ task.title }}</h4>
                         <p>{{ task.description }}</p>
                         <p><strong>Due:</strong> {{ task.due_date }}</p>
@@ -244,8 +221,6 @@
                             <a href="{% url 'delete_task' task.id %}" class="delete-btn">Delete</a>
                         </div>
                     </div>
-                {% empty %}
-                    <p class="empty-message">No tasks in this column</p>
                 {% endfor %}
             </div>
 
@@ -263,13 +238,10 @@
                             <a href="{% url 'delete_task' task.id %}" class="delete-btn">Delete</a>
                         </div>
                     </div>
-                {% empty %}
-                    <p class="empty-message">No tasks in this column</p>
                 {% endfor %}
             </div>
         </div>
     </div>
-
     <script>
         let draggedTask = null;
 
@@ -297,7 +269,6 @@
             // Update the task status in the backend
             const taskId = draggedTask.getAttribute('data-id');
             updateTaskStatus(taskId, status);
-            updateEmptyMessages();
         }
 
         function updateTaskStatus(taskId, status) {
@@ -315,135 +286,8 @@
             }).catch(error => {
                 console.error('Error:', error);
             });
-        }
-
-        function updateEmptyMessages() {
-            const columns = document.querySelectorAll('.kanban-column');
-            columns.forEach(column => {
-                const tasks = column.querySelectorAll('.task');
-                let emptyMessage = column.querySelector('.empty-message');
-
-                if (tasks.length > 0) {
-                    if (emptyMessage) emptyMessage.style.display = 'none';
-                } else {
-                    if (emptyMessage) {
-                        emptyMessage.style.display = 'block';
-                    } else {
-                        emptyMessage = document.createElement('p');
-                        emptyMessage.classList.add('empty-message');
-                        emptyMessage.textContent = 'No tasks in this column';
-                        column.appendChild(emptyMessage);
-                    }
-                }
-            });
-        }
-
-        function applyFiltersAndSort() {
-            const sortBy = document.getElementById('sort-tasks').value;
-            const filterTag = document.getElementById('filter-tags').value;
-            const selectedDueDate = document.getElementById('due-date-filter').value;
-        
-            const columns = document.querySelectorAll('.kanban-column');
-            columns.forEach(column => {
-                const tasks = Array.from(column.querySelectorAll('.task'));
-        
-                // Filter tasks by tag and due date
-                let filteredTasks = tasks.filter(task => {
-                    const taskTags = task.getAttribute('data-tag').split(','); // Assuming tags are comma-separated
-                    const isTagMatch = filterTag === 'all' || taskTags.includes(filterTag);
-        
-                    // Filter by due date if specified
-                    const taskDueDate = task.getAttribute('data-due');
-                    const isDueDateMatch = selectedDueDate === "" || taskDueDate === selectedDueDate;
-        
-                    return isTagMatch && isDueDateMatch;
-                });
-        
-                // Sort tasks
-                filteredTasks.sort((a, b) => {
-                    if (sortBy === 'newest') {
-                        const createdA = new Date(a.getAttribute('data-created'));
-                        const createdB = new Date(b.getAttribute('data-created'));
-                        return createdB - createdA;
-                    } else if (sortBy === 'oldest') {
-                        const createdA = new Date(a.getAttribute('data-created'));
-                        const createdB = new Date(b.getAttribute('data-created'));
-                        return createdA - createdB;
-                    } else if (sortBy === 'due_date') {
-                        const dueA = new Date(a.getAttribute('data-due'));
-                        const dueB = new Date(b.getAttribute('data-due'));
-                        return dueA - dueB;
-                    }
-                });
-        
-                // Clear all tasks and append filtered/sorted tasks
-                column.innerHTML = column.querySelector('h3').outerHTML;  // Retain column header
-                filteredTasks.forEach(task => column.appendChild(task));
-            });
-        }
-        
-        
-        
-
-        function clearFiltersAndSort() {
-            document.getElementById('sort-tasks').value = 'newest';
-            document.getElementById('filter-tags').value = 'all';
-            applyFiltersAndSort();
-        }
-
-        // Generate dynamic task tags filter
-        function generateTagFilter(tags) {
-            const filterSelect = document.getElementById('filter-tags');
-            tags.forEach(tag => {
-                const option = document.createElement('option');
-                option.value = tag;
-                option.textContent = tag;
-                filterSelect.appendChild(option);
-            });
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            // Sample tags and tasks data
-            const tags = ['Urgent', 'In Progress', 'Completed'];
-            generateTagFilter(tags);
-
-            // Initialize Kanban Columns
-            const tasks = [
-                { id: 1, title: 'Task 1', status: 'todo', tags: ['Urgent'], dueDate: '2024-12-05', created: '2024-11-01' },
-                { id: 2, title: 'Task 2', status: 'in_progress', tags: ['In Progress'], dueDate: '2024-12-08', created: '2024-11-02' },
-                { id: 3, title: 'Task 3', status: 'completed', tags: ['Completed'], dueDate: '2024-12-10', created: '2024-11-03' }
-            ];
             
-            const columnContainers = document.querySelectorAll('.kanban-column');
-            
-            tasks.forEach(task => {
-                const taskElement = document.createElement('div');
-                taskElement.classList.add('task');
-                taskElement.setAttribute('draggable', 'true');
-                taskElement.setAttribute('data-id', task.id);
-                taskElement.setAttribute('data-tag', task.tags.join(','));
-                taskElement.setAttribute('data-due', task.dueDate);
-                taskElement.setAttribute('data-created', task.created);
-
-                taskElement.innerHTML = `
-                    <strong>${task.title}</strong>
-                    <div class="task-actions">
-                        <a href="#">Edit</a>
-                        <a href="#">Delete</a>
-                    </div>
-                `;
-        
-                // Add event listeners for drag events
-                taskElement.addEventListener('dragstart', dragStart);
-                taskElement.addEventListener('dragend', dragEnd);
-        
-                // Find the correct column to add the task
-                const column = Array.from(columnContainers).find(col => col.getAttribute('data-status') === task.status);
-                column.appendChild(taskElement);
-            });
-
-            updateEmptyMessages();
-        });
+        }
     </script>
 </body>
 </html>
