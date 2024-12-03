@@ -90,16 +90,14 @@
             margin-bottom: 2rem;
         }
 
-        .hero img {
+        .hero video {
             max-width: 53%;
-            height: auto;
             border-radius: 8px;
-            object-fit: cover;
         }
 
         footer {
             margin-top: auto;
-            padding: 1rem;
+            padding: 1rem 1rem 2rem; /* Added bottom padding */
             font-size: 0.9rem;
             color: #1a1a1a;
         }
@@ -150,7 +148,7 @@
     </header>
     <main>
         <!-- Introductory Text -->
-         <h1>Organize. Prioritize. Achieve.</h1>
+        <h1>Organize. Prioritize. Achieve.</h1>
         <p>Taskmate is here to help you stay organized, prioritize tasks, and track your progress with ease. Start today!</p>
         
         <!-- Call-to-Action Section -->
@@ -161,11 +159,14 @@
 
         <!-- Hero Section -->
         <div class="hero">
-            <img src="https://www.notion.so/front-static/pages/product/super-duper/hero/hero-illustration.mp4" alt="TaskMate Hero Image">
+            <video autoplay loop muted playsinline>
+                <source src="https://www.notion.so/front-static/pages/product/super-duper/hero/hero-illustration.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
         </div>
     </main>
     <footer>
-        © 2024 Taskmate. All righs reserved.
+        © 2024 Taskmate. All rights reserved.
     </footer>
 </body>
 </html>
